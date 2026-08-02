@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Unidad 3 interactiva de Matemática 1 sobre vectores en el plano.">
+  <meta name="theme-color" content="#1f4e8c">
+  <title>Matemática 1 | Unidad 3 · Vectores</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(','\\)'],['$','$']],
+        displayMath: [['\\[','\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+<header class="cabecera">
+  <div class="cabecera__marca">
+    <div class="marca-matematica marca-vector" aria-hidden="true">
+      <svg viewBox="0 0 84 84"><defs><marker id="logoArrow" viewBox="0 0 10 10" markerWidth="7" markerHeight="7" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z"/></marker></defs><line x1="16" y1="62" x2="67" y2="20" marker-end="url(#logoArrow)"/><circle cx="16" cy="62" r="4"/></svg>
+    </div>
+    <div>
+      <p class="ceja">FaCiAS · UNCo · Recursado 2026</p>
+      <h1>Matemática 1</h1>
+      <p class="subtitulo">Unidad 3 · Vectores en el plano</p>
+    </div>
+  </div>
+  <div class="cabecera__acciones">
+    <label class="campo-estudiante"><span>Estudiante</span><input id="nombre-estudiante" type="text" maxlength="80" placeholder="Nombre y apellido" autocomplete="name"></label>
+    <button class="boton boton--claro" id="imprimir" type="button">Imprimir resumen</button>
+    <button class="boton boton--peligro-suave" id="reiniciar" type="button">Reiniciar progreso</button>
+  </div>
+</header>
+<div class="barra-progreso" aria-label="Progreso de la unidad">
+  <div class="barra-progreso__texto"><span>Progreso guardado en este dispositivo</span><strong id="progreso-texto">0%</strong></div>
+  <div class="barra-progreso__riel"><div id="progreso-barra" class="barra-progreso__valor"></div></div>
+</div>
+<div class="layout">
+  <aside class="navegacion">
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="lista-navegacion">Contenidos <span>☰</span></button>
+    <nav id="lista-navegacion">
+      <a href="#inicio" class="activo">Inicio</a>
+      <a href="#concepto">1. Qué es un vector</a>
+      <a href="#componentes">2. Componentes, módulo y distancia</a>
+      <a href="#operaciones">3. Operaciones con vectores</a>
+      <a href="#paralelismo">4. Paralelismo y versores</a>
+      <a href="#producto">5. Producto escalar y ángulo</a>
+      <a href="#descomposicion">6. Descomposición vectorial</a>
+      <a href="#aplicaciones">7. Aplicaciones del TP</a>
+      <a href="#practica-final">Práctica integradora</a>
+    </nav>
+    <section class="panel-lateral">
+      <h2>Cómo estudiar</h2>
+      <p>Interpretá el dibujo, anticipá el resultado y después comprobá con las componentes.</p>
+      <p class="panel-lateral__dato"><span id="aciertos-total">0</span> actividades resueltas</p>
+    </section>
+  </aside>
+
+  <main id="contenido">
+    <section id="inicio" class="seccion observar activa" aria-hidden="false">
+      <div class="hero hero-vectores">
+        <div class="hero__texto">
+          <p class="etiqueta">Teoría + práctica interactiva</p>
+          <h2>Vectores para describir magnitud, dirección y sentido</h2>
+          <p>El recorrido conecta la representación geométrica con el cálculo por componentes: módulo, suma, multiplicación por escalares, paralelismo, producto escalar, ángulos y descomposición.</p>
+          <div class="hero__acciones"><a class="boton" href="#concepto">Comenzar el recorrido</a><a class="boton boton--secundario" href="#practica-final">Práctica integradora</a></div>
+        </div>
+        <div class="hero-grafico">
+          <svg viewBox="0 0 620 410" role="img" aria-label="Vectores dibujados sobre un sistema de coordenadas">
+            <defs><pattern id="gridHeroV" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0L0 0 0 32" fill="none" stroke="#d9e4ef"/></pattern><marker id="heroArrowBlue" viewBox="0 0 10 10" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="#1f4e8c"/></marker><marker id="heroArrowGreen" viewBox="0 0 10 10" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="#17725a"/></marker><marker id="heroArrowOrange" viewBox="0 0 10 10" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="#b56b20"/></marker></defs>
+            <rect x="35" y="24" width="550" height="350" rx="20" fill="url(#gridHeroV)" stroke="#a8bfd7"/>
+            <line x1="52" y1="205" x2="569" y2="205" stroke="#26384b" stroke-width="2"/><line x1="305" y1="358" x2="305" y2="42" stroke="#26384b" stroke-width="2"/>
+            <line x1="305" y1="205" x2="485" y2="98" stroke="#1f4e8c" stroke-width="6" stroke-linecap="round" marker-end="url(#heroArrowBlue)"/>
+            <line x1="305" y1="205" x2="160" y2="92" stroke="#17725a" stroke-width="6" stroke-linecap="round" marker-end="url(#heroArrowGreen)"/>
+            <line x1="160" y1="92" x2="340" y2="54" stroke="#b56b20" stroke-width="6" stroke-linecap="round" marker-end="url(#heroArrowOrange)"/>
+            <line x1="305" y1="205" x2="340" y2="54" stroke="#963f62" stroke-width="4" stroke-dasharray="8 7"/>
+            <g font-family="system-ui" font-size="18" font-weight="800"><text x="470" y="88" fill="#1f4e8c">u</text><text x="135" y="84" fill="#17725a">v</text><text x="325" y="45" fill="#b56b20">u+v</text></g>
+          </svg>
+        </div>
+      </div>
+      <div class="ruta ruta-inicio">
+        <div class="titulo-seccion"><p class="numero">Mapa</p><div><h2>Ruta de aprendizaje</h2><p>Representar, calcular, interpretar y modelizar.</p></div></div>
+        <div class="tarjetas-ruta"><article><span>01</span><h3>Reconocer</h3><p>Módulo, dirección y sentido.</p></article><article><span>02</span><h3>Representar</h3><p>Puntos, componentes y vectores.</p></article><article><span>03</span><h3>Operar</h3><p>Suma y producto por escalar.</p></article><article><span>04</span><h3>Relacionar</h3><p>Paralelismo, ángulos y ortogonalidad.</p></article><article><span>05</span><h3>Modelizar</h3><p>Flujos, fuerzas y desplazamientos.</p></article></div>
+      </div>
+    </section>
+
+    <section id="concepto" class="seccion observar" aria-hidden="true">
+      <div class="titulo-seccion"><p class="numero">1</p><div><h2>Qué es un vector</h2><p>Un segmento orientado tiene punto inicial, punto final, módulo, dirección y sentido.</p></div></div>
+      <div class="comparacion-magnitudes">
+        <article><p class="actividad__tipo">Magnitud escalar</p><h3>Un número y una unidad</h3><p>Temperatura, masa, tiempo, área o volumen quedan caracterizados por un valor real.</p></article>
+        <article><p class="actividad__tipo">Magnitud vectorial</p><h3>Magnitud + dirección + sentido</h3><p>Fuerza, velocidad y desplazamiento necesitan información sobre cuánto y hacia dónde.</p></article>
+      </div>
+      <div class="definicion-vector">
+        <div><p class="actividad__tipo">Definición</p><p>Llamamos vector a un segmento orientado \(\overrightarrow{PQ}\), donde \(P\) es el punto inicial y \(Q\) el punto final.</p><dl class="lista-definiciones"><div><dt>Módulo</dt><dd>Longitud del segmento: \(\|\overrightarrow{PQ}\|\).</dd></div><div><dt>Dirección</dt><dd>La recta de acción que contiene al vector, o cualquier recta paralela.</dd></div><div><dt>Sentido</dt><dd>La orientación desde el punto inicial hacia el punto final.</dd></div></dl></div>
+        <svg class="svg-concepto" viewBox="0 0 470 270" role="img" aria-label="Vector PQ sobre su recta de acción"><defs><marker id="conceptArrow" viewBox="0 0 10 10" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="#1f4e8c"/></marker></defs><line x1="50" y1="220" x2="420" y2="48" stroke="#9eb2c5" stroke-width="3"/><line x1="120" y1="188" x2="355" y2="79" stroke="#1f4e8c" stroke-width="7" stroke-linecap="round" marker-end="url(#conceptArrow)"/><circle cx="120" cy="188" r="7" fill="#173b64"/><circle cx="355" cy="79" r="7" fill="#173b64"/><text x="98" y="218">P</text><text x="369" y="74">Q</text><text x="318" y="122" fill="#1f4e8c">\(\overrightarrow{PQ}\)</text><text x="190" y="238" fill="#65788d">recta de acción</text></svg>
+      </div>
+      <div class="nota"><strong>Vectores equivalentes.</strong> Dos vectores son equivalentes cuando tienen el mismo módulo, dirección y sentido. En coordenadas, esto equivale a tener las mismas componentes.</div>
+      <article class="actividad" data-actividad="conceptos">
+        <div class="actividad__cabecera"><div><p class="actividad__tipo">Actividad 1 · Conceptos básicos</p><h3>Escalar, vector o propiedad</h3><p>Elegí la opción que describe mejor cada situación.</p></div><span class="estado" id="estado-conceptos">Pendiente</span></div>
+        <div id="quiz-conceptos" class="lista-preguntas"></div>
+        <div class="acciones-actividad"><button class="boton" data-check="conceptos" type="button">Comprobar</button><button class="boton boton--fantasma" data-reset="conceptos" type="button">Borrar</button></div><div class="retroalimentacion" id="feedback-conceptos"></div>
+      </article>
+    </section>
+
+    <section id="componentes" class="seccion observar" aria-hidden="true">
+      <div class="titulo-seccion"><p class="numero">2</p><div><h2>Componentes, módulo y distancia</h2><p>Las componentes se obtienen como punto final menos punto inicial.</p></div></div>
+      <div class="grilla-teoria grilla-teoria--3">
+        <article class="tarjeta-concepto"><h3>Componentes</h3><p>Si \(P=(p_1,p_2)\) y \(Q=(q_1,q_2)\), entonces</p><p class="formula">\[\overrightarrow{PQ}=(q_1-p_1,\,q_2-p_2).\]</p></article>
+        <article class="tarjeta-concepto"><h3>Módulo</h3><p>Para \(\vec v=(a,b)\):</p><p class="formula">\[\|\vec v\|=\sqrt{a^2+b^2}.\]</p></article>
+        <article class="tarjeta-concepto"><h3>Distancia</h3><p>La distancia entre \(P\) y \(Q\) coincide con el módulo de \(\overrightarrow{PQ}\).</p><p class="formula">\[d(P,Q)=\sqrt{(q_1-p_1)^2+(q_2-p_2)^2}.\]</p></article>
+      </div>
+      <article class="laboratorio">
+        <div class="laboratorio__texto"><p class="actividad__tipo">Laboratorio gráfico</p><h3>Mové los puntos inicial y final</h3><p>El vector no se calcula con las coordenadas aisladas: siempre se resta \(Q-P\).</p>
+          <div class="controles-grid controles-grid--4"><label>\(p_1\)<input id="vp1" type="range" min="-6" max="6" step="1" value="-2"><output id="vp1-out">−2</output></label><label>\(p_2\)<input id="vp2" type="range" min="-6" max="6" step="1" value="1"><output id="vp2-out">1</output></label><label>\(q_1\)<input id="vq1" type="range" min="-6" max="6" step="1" value="3"><output id="vq1-out">3</output></label><label>\(q_2\)<input id="vq2" type="range" min="-6" max="6" step="1" value="4"><output id="vq2-out">4</output></label></div>
+          <div id="vector-datos" class="resultado-lab"></div>
+        </div>
+        <div id="plano-vector" class="plano-svg" aria-live="polite"></div>
+      </article>
+      <details class="desplegable"><summary>¿Cómo hallar un punto final?</summary><div><p>Si conocemos el punto inicial \(P\) y las componentes \(\vec v=(a,b)\), el punto final se obtiene sumando: \(Q=P+\vec v=(p_1+a,p_2+b)\).</p></div></details>
+      <article class="actividad" data-actividad="componentes">
+        <div class="actividad__cabecera"><div><p class="actividad__tipo">Actividad 2 · Del TP 2026</p><h3>Componentes, módulos y puntos</h3><p>Trabajá con “punto final menos punto inicial”.</p></div><span class="estado" id="estado-componentes">Pendiente</span></div>
+        <div id="quiz-componentes" class="lista-preguntas"></div>
+        <div class="acciones-actividad"><button class="boton" data-check="componentes" type="button">Comprobar</button><button class="boton boton--fantasma" data-reset="componentes" type="button">Borrar</button></div><div class="retroalimentacion" id="feedback-componentes"></div>
+      </article>
+    </section>
+
+    <section id="operaciones" class="seccion observar" aria-hidden="true">
+      <div class="titulo-seccion"><p class="numero">3</p><div><h2>Operaciones con vectores</h2><p>La suma y la multiplicación por un escalar se realizan componente a componente.</p></div></div>
+      <div class="grilla-teoria">
+        <article class="tarjeta-concepto"><h3>Suma</h3><p>Si \(\vec u=(a,b)\) y \(\vec v=(c,d)\),</p><p class="formula">\[\vec u+\vec v=(a+c,b+d).\]</p></article>
+        <article class="tarjeta-concepto"><h3>Multiplicación por un escalar</h3><p>Para \(k\in\mathbb R\),</p><p class="formula">\[k\vec u=(ka,kb).\]</p></article>
+      </div>
+      <div class="metodos-graficos"><article><h3>Método del triángulo</h3><p>Trasladamos \(\vec v\) para que comience donde termina \(\vec u\). La suma une el origen del primero con el extremo del segundo.</p></article><article><h3>Método del paralelogramo</h3><p>Con ambos vectores en el mismo origen, completamos un paralelogramo. La diagonal es \(\vec u+\vec v\).</p></article></div>
+      <article class="laboratorio">
+        <div class="laboratorio__texto"><p class="actividad__tipo">Explorador de operaciones</p><h3>Suma y producto por escalar</h3><div class="controles-grid controles-grid--5"><label>\(u_1\)<input id="u1" type="range" min="-5" max="5" step="1" value="-2"><output id="u1-out">−2</output></label><label>\(u_2\)<input id="u2" type="range" min="-5" max="5" step="1" value="2"><output id="u2-out">2</output></label><label>\(v_1\)<input id="v1" type="range" min="-5" max="5" step="1" value="3"><output id="v1-out">3</output></label><label>\(v_2\)<input id="v2" type="range" min="-5" max="5" step="1" value="1"><output id="v2-out">1</output></label><label>\(k\)<input id="vk" type="range" min="-3" max="3" step="0.5" value="2"><output id="vk-out">2</output></label></div><div id="operaciones-datos" class="resultado-lab"></div></div>
+        <div id="plano-operaciones" class="plano-svg"></div>
+      </article>
+      <div class="nota"><strong>Interpretación de \(k\vec v\).</strong> Si \(k\gt0\), conserva el sentido; si \(k\lt0\), lo invierte. Si \(|k|\gt1\), dilata; si \(0\lt|k|\lt1\), contrae.</div>
+      <article class="actividad" data-actividad="operaciones">
+        <div class="actividad__cabecera"><div><p class="actividad__tipo">Actividad 3 · Operaciones combinadas</p><h3>Calculá por componentes</h3><p>Respetá el orden: paréntesis, producto por escalares y luego suma o resta.</p></div><span class="estado" id="estado-operaciones">Pendiente</span></div>
+        <div id="quiz-operaciones" class="lista-preguntas"></div>
+        <div class="acciones-actividad"><button class="boton" data-check="operaciones" type="button">Comprobar</button><button class="boton boton--fantasma" data-reset="operaciones" type="button">Borrar</button></div><div class="retroalimentacion" id="feedback-operaciones"></div>
+      </article>
+    </section>
+
+    <section id="paralelismo" class="seccion observar" aria-hidden="true">
+      <div class="titulo-seccion"><p class="numero">4</p><div><h2>Paralelismo, dirección y versores</h2><p>Los múltiplos escalares comparten dirección; el signo del escalar determina el sentido.</p></div></div>
+      <div class="grilla-teoria grilla-teoria--3"><article class="tarjeta-concepto"><h3>Vectores paralelos</h3><p>\(\vec u\parallel\vec v\) si existe \(k\in\mathbb R\setminus\{0\}\) tal que \(\vec u=k\vec v\).</p></article><article class="tarjeta-concepto"><h3>Versor</h3><p>Un vector unitario tiene módulo 1. Para \(\vec v\ne\vec0\):</p><p class="formula">\[\widehat v=\frac{1}{\|\vec v\|}\vec v.\]</p></article><article class="tarjeta-concepto"><h3>Versores canónicos</h3><p>\(\hat\imath=(1,0)\) y \(\hat\jmath=(0,1)\). Todo vector \((a,b)\) se escribe \(a\hat\imath+b\hat\jmath\).</p></article></div>
+      <div class="regla-sentido"><div><span class="chip chip--positivo">\(k\gt0\)</span><p>Misma dirección y mismo sentido.</p></div><div><span class="chip chip--negativo">\(k\lt0\)</span><p>Misma dirección y sentido contrario.</p></div></div>
+      <article class="actividad" data-actividad="paralelismo">
+        <div class="actividad__cabecera"><div><p class="actividad__tipo">Actividad 4 · Paralelismo y norma</p><h3>Elegí el vector pedido</h3><p>Usá \(\|k\vec v\|=|k|\|\vec v\|\).</p></div><span class="estado" id="estado-paralelismo">Pendiente</span></div>
+        <div id="quiz-paralelismo" class="lista-preguntas"></div>
+        <div class="acciones-actividad"><button class="boton" data-check="paralelismo" type="button">Comprobar</button><button class="boton boton--fantasma" data-reset="paralelismo" type="button">Borrar</button></div><div class="retroalimentacion" id="feedback-paralelismo"></div>
+      </article>
+    </section>
+
+    <section id="producto" class="seccion observar" aria-hidden="true">
+      <div class="titulo-seccion"><p class="numero">5</p><div><h2>Producto escalar, ángulo y ortogonalidad</h2><p>El producto escalar traduce una relación geométrica en un número real.</p></div></div>
+      <div class="grilla-teoria"><article class="tarjeta-concepto"><h3>Por componentes</h3><p>Para \(\vec u=(u_1,u_2)\), \(\vec v=(v_1,v_2)\):</p><p class="formula">\[\vec u\cdot\vec v=u_1v_1+u_2v_2.\]</p></article><article class="tarjeta-concepto"><h3>Con el ángulo</h3><p>Para vectores no nulos:</p><p class="formula">\[\vec u\cdot\vec v=\|\vec u\|\,\|\vec v\|\cos\theta.\]</p><p>\[\theta=\arccos\left(\frac{\vec u\cdot\vec v}{\|\vec u\|\|\vec v\|}\right).\]</p></article></div>
+      <div class="signo-angulo"><article><strong>\(\vec u\cdot\vec v\gt0\)</strong><span>Ángulo agudo</span></article><article><strong>\(\vec u\cdot\vec v=0\)</strong><span>Vectores ortogonales</span></article><article><strong>\(\vec u\cdot\vec v\lt0\)</strong><span>Ángulo obtuso</span></article></div>
+      <article class="laboratorio">
+        <div class="laboratorio__texto"><p class="actividad__tipo">Laboratorio de ángulos</p><h3>Cambiá los vectores y observá el producto</h3><div class="controles-grid controles-grid--4"><label>\(u_1\)<input id="au1" type="range" min="-5" max="5" step="1" value="4"><output id="au1-out">4</output></label><label>\(u_2\)<input id="au2" type="range" min="-5" max="5" step="1" value="2"><output id="au2-out">2</output></label><label>\(v_1\)<input id="av1" type="range" min="-5" max="5" step="1" value="-1"><output id="av1-out">−1</output></label><label>\(v_2\)<input id="av2" type="range" min="-5" max="5" step="1" value="3"><output id="av2-out">3</output></label></div><div id="angulo-datos" class="resultado-lab"></div></div><div id="plano-angulo" class="plano-svg"></div>
+      </article>
+      <article class="actividad" data-actividad="producto">
+        <div class="actividad__cabecera"><div><p class="actividad__tipo">Actividad 5 · Producto escalar</p><h3>Calculá e interpretá</h3><p>El resultado es un número real, no un vector.</p></div><span class="estado" id="estado-producto">Pendiente</span></div><div id="quiz-producto" class="lista-preguntas"></div><div class="acciones-actividad"><button class="boton" data-check="producto" type="button">Comprobar</button><button class="boton boton--fantasma" data-reset="producto" type="button">Borrar</button></div><div class="retroalimentacion" id="feedback-producto"></div>
+      </article>
+      <article class="actividad" data-actividad="ortogonalidad">
+        <div class="actividad__cabecera"><div><p class="actividad__tipo">Actividad 6 · Ángulos y perpendicularidad</p><h3>Usá el criterio \(\vec u\cdot\vec v=0\)</h3><p>Para hablar de ángulo, ambos vectores deben ser distintos de \(\vec0\).</p></div><span class="estado" id="estado-ortogonalidad">Pendiente</span></div><div id="quiz-ortogonalidad" class="lista-preguntas"></div><div class="acciones-actividad"><button class="boton" data-check="ortogonalidad" type="button">Comprobar</button><button class="boton boton--fantasma" data-reset="ortogonalidad" type="button">Borrar</button></div><div class="retroalimentacion" id="feedback-ortogonalidad"></div>
+      </article>
+    </section>
+
+    <section id="descomposicion" class="seccion observar" aria-hidden="true">
+      <div class="titulo-seccion"><p class="numero">6</p><div><h2>Descomposición en dos direcciones</h2><p>Buscamos escalares \(k_1\) y \(k_2\) tales que \(\vec q=k_1\vec a+k_2\vec b\).</p></div></div>
+      <div class="definicion-descomposicion"><div><p class="actividad__tipo">Idea central</p><h3>Una combinación lineal</h3><p>Al igualar las componentes se obtiene un sistema de dos ecuaciones. Si \(\vec a\) y \(\vec b\) no son paralelos, la descomposición existe y es única.</p><p class="formula-grande">\[\vec q=k_1\vec a+k_2\vec b.\]</p></div><div class="pasos"><ol><li>Escribir los tres vectores por componentes.</li><li>Multiplicar \(k_1\vec a\) y \(k_2\vec b\).</li><li>Igualar primera y segunda componente.</li><li>Resolver el sistema y verificar.</li></ol></div></div>
+      <article class="laboratorio laboratorio--vertical">
+        <div class="laboratorio__texto"><p class="actividad__tipo">Calculadora de descomposición</p><h3>Probá distintas direcciones</h3><div class="controles-numericos"><fieldset><legend>Vector objetivo \(\vec q\)</legend><label>\(q_1\)<input id="dq1" type="number" step="1" value="-2"></label><label>\(q_2\)<input id="dq2" type="number" step="1" value="1"></label></fieldset><fieldset><legend>Dirección \(\vec a\)</legend><label>\(a_1\)<input id="da1" type="number" step="1" value="4"></label><label>\(a_2\)<input id="da2" type="number" step="1" value="2"></label></fieldset><fieldset><legend>Dirección \(\vec b\)</legend><label>\(b_1\)<input id="db1" type="number" step="1" value="1"></label><label>\(b_2\)<input id="db2" type="number" step="1" value="-2"></label></fieldset></div><button id="resolver-descomposicion" class="boton" type="button">Resolver y representar</button><div id="descomposicion-datos" class="resultado-lab"></div></div><div id="plano-descomposicion" class="plano-svg"></div>
+      </article>
+      <article class="actividad" data-actividad="descomposicion">
+        <div class="actividad__cabecera"><div><p class="actividad__tipo">Actividad 7 · Descomposición</p><h3>Decidí si es posible y calculá</h3><p>Las preguntas retoman el trabajo práctico 2026.</p></div><span class="estado" id="estado-descomposicion">Pendiente</span></div><div id="quiz-descomposicion" class="lista-preguntas"></div><div class="acciones-actividad"><button class="boton" data-check="descomposicion" type="button">Comprobar</button><button class="boton boton--fantasma" data-reset="descomposicion" type="button">Borrar</button></div><div class="retroalimentacion" id="feedback-descomposicion"></div>
+      </article>
+    </section>
+
+    <section id="aplicaciones" class="seccion observar" aria-hidden="true">
+      <div class="titulo-seccion"><p class="numero">7</p><div><h2>Aplicaciones del trabajo práctico</h2><p>Los vectores modelizan desplazamientos, fuerzas, flujos y posiciones.</p></div></div>
+      <div class="casos-aplicados"><article><p class="actividad__tipo">Planta de tratamiento</p><h3>Flujo de una bomba y viento</h3><p>\(\vec F=(12,-4)\), \(\vec V=(-3,6)\). La resultante es \(\vec R=\vec F+\vec V\).</p></article><article><p class="actividad__tipo">Barcos y faro</p><h3>Distancias y ángulo de observación</h3><p>Desde el faro se construyen dos vectores hacia las posiciones de los barcos y se calcula el ángulo mediante producto escalar.</p></article><article><p class="actividad__tipo">Cintas transportadoras</p><h3>Combinación de movimientos</h3><p>El desplazamiento observado se expresa, si es posible, como combinación de dos direcciones de movimiento.</p></article></div>
+      <article class="simulador-flujo">
+        <div><p class="actividad__tipo">Simulación contextual</p><h3>Resultante del flujo superficial</h3><p>Mové el factor de intensidad de la bomba y observá cómo cambia la resultante.</p><label>Intensidad \(c\)<input id="factor-flujo" type="range" min="0" max="2" step="0.1" value="1"><output id="factor-flujo-out">1</output></label><div id="flujo-datos" class="resultado-lab"></div></div><div id="plano-flujo" class="plano-svg"></div>
+      </article>
+      <article class="actividad" data-actividad="aplicaciones">
+        <div class="actividad__cabecera"><div><p class="actividad__tipo">Actividad 8 · Modelización</p><h3>Interpretá situaciones del TP</h3><p>La respuesta matemática debe mantener el significado de sus componentes y unidades.</p></div><span class="estado" id="estado-aplicaciones">Pendiente</span></div><div id="quiz-aplicaciones" class="lista-preguntas"></div><div class="acciones-actividad"><button class="boton" data-check="aplicaciones" type="button">Comprobar</button><button class="boton boton--fantasma" data-reset="aplicaciones" type="button">Borrar</button></div><div class="retroalimentacion" id="feedback-aplicaciones"></div>
+      </article>
+    </section>
+
+    <section id="practica-final" class="seccion observar" aria-hidden="true">
+      <div class="titulo-seccion"><p class="numero">✓</p><div><h2>Práctica integradora</h2><p>Preguntas aleatorias de todos los temas de la unidad.</p></div></div>
+      <article class="actividad actividad-final"><div class="actividad__cabecera"><div><p class="actividad__tipo">Modo práctica</p><h3 id="practica-pregunta">Tocá “Nueva pregunta” para comenzar.</h3></div><span class="racha" id="racha">Racha: 0</span></div><div id="practica-opciones" class="opciones opciones-final"></div><div class="acciones-actividad"><button class="boton" id="practica-nueva" type="button">Nueva pregunta</button><button class="boton boton--secundario" id="practica-comprobar" type="button" disabled>Comprobar</button></div><div id="practica-feedback" class="retroalimentacion"></div></article>
+      <div class="resumen-estudiante"><h3>Resumen del estudiante</h3><div class="resumen-estudiante__grid"><article><span>Nombre</span><strong id="resumen-nombre">Sin completar</strong></article><article><span>Progreso</span><strong id="resumen-progreso">0%</strong></article><article><span>Actividades</span><strong id="resumen-logradas">0 de 8</strong></article><article><span>Mejor racha</span><strong id="resumen-racha">0</strong></article></div></div>
+    </section>
+  </main>
+</div>
+<footer><p>Matemática 1 · Unidad 3 · Vectores · FaCiAS · Universidad Nacional del Comahue</p><p>Material de apoyo para el recursado 2026.</p></footer>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
