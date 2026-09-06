@@ -18,7 +18,7 @@ Sitio teórico-práctico interactivo para la Unidad 3 de Matemática 1 (FaCiAS �
 ## Interactividad
 
 - Una sola sección visible por vez.
-- Laboratorios SVG para puntos, vectores, operaciones, ángulo y descomposición.
+- Laboratorios SVG para puntos, vectores, operaciones, ángulo y descomposición, con escala 1:1 y grilla que se ajusta automáticamente.
 - Actividades con tarjetas seleccionables y fórmulas MathJax.
 - Devolución inmediata y guardado local del progreso.
 - Práctica integradora aleatoria.

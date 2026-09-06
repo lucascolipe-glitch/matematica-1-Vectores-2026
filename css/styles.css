@@ -141,8 +141,8 @@ main > .seccion.activa { display: block; animation: aparecer-seccion .28s ease b
 .controles-grid input[type="range"], .simulador-flujo input[type="range"] { width: 100%; }
 .controles-grid output, .simulador-flujo output { min-width: 34px; text-align: right; color: var(--azul-oscuro); }
 .resultado-lab { margin-top: 17px; padding: 13px 15px; border-radius: 13px; color: var(--azul-oscuro); background: var(--azul-claro); }
-.plano-svg { display: grid; place-items: center; min-height: 560px; overflow: hidden; border: 1px solid #cbd9e5; border-radius: 16px; background: white; }
-.plano-svg svg { width: 100%; height: 100%; }
+.plano-svg { display: grid; place-items: center; width: 100%; min-height: 0; aspect-ratio: 1; overflow: hidden; border: 1px solid #cbd9e5; border-radius: 16px; background: white; }
+.plano-svg svg { display: block; width: 100%; height: 100%; min-width: 0; }
 .metodos-graficos { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 13px; margin: 20px 0; }
 .metodos-graficos article { padding: 18px; border: 1px solid var(--borde); border-radius: 15px; background: #fbfdff; }
 .metodos-graficos h3 { margin: 0 0 6px; color: var(--azul-oscuro); }
@@ -205,8 +205,8 @@ footer p { margin: 4px; }
   .controles-grid--4, .controles-grid--5 { grid-template-columns: 1fr; }
   .opciones { grid-template-columns: 1fr; }
   .lista-definiciones > div { grid-template-columns: 1fr; gap: 2px; }
-  .plano-svg { min-height: 290px; overflow-x: auto; justify-content: start; }
-  .plano-svg svg { min-width: 520px; }
+  .plano-svg { min-height: 0; aspect-ratio: 1; overflow: hidden; }
+  .plano-svg svg { min-width: 0; }
   .actividad__cabecera { display: grid; }
   .estado, .racha { justify-self: start; }
   .navegacion-secuencial { display: grid; grid-template-columns: 1fr; }

@@ -102,24 +102,46 @@ function restaurarEstadosVisuales() { Object.entries(estado.completadas).forEach
 function actualizarProgreso() { const logradas=Object.values(estado.completadas).filter(Boolean).length; const porcentaje=Math.round(logradas/TOTAL_ACTIVIDADES*100); document.getElementById('progreso-texto').textContent=`${porcentaje}%`; document.getElementById('progreso-barra').style.width=`${porcentaje}%`; document.getElementById('aciertos-total').textContent=logradas; document.getElementById('resumen-progreso').textContent=`${porcentaje}%`; document.getElementById('resumen-logradas').textContent=`${logradas} de ${TOTAL_ACTIVIDADES}`; document.getElementById('resumen-racha').textContent=mejorRacha; document.getElementById('resumen-nombre').textContent=estado.nombre?.trim()||'Sin completar'; }
 
 let planoContador = 0;
+
+function pasoGrilla(valor) {
+  if (!Number.isFinite(valor) || valor <= 0) return 1;
+  const potencia = 10 ** Math.floor(Math.log10(valor));
+  const normalizado = valor / potencia;
+  const factor = normalizado <= 1.5 ? 1 : normalizado <= 3.5 ? 2 : normalizado <= 7.5 ? 5 : 10;
+  return factor * potencia;
+}
+
 function planoSVG(vectores, opciones={}) {
-  const W=620,H=450,m=44;
+  const W=620,H=620,m=56,tamano=W-2*m;
   const extremos=vectores.flatMap(v=>{const p=v.desde||[0,0],q=v.hasta||v.vector||[0,0];return [p[0],p[1],q[0],q[1]];});
-  const maxAbs=Math.max(5,...extremos.map(v=>Math.abs(Number(v)||0)));
-  const limite=Math.min(24,Math.max(6,Math.ceil(maxAbs+1)));
-  const min=-limite,max=limite,esc=(W-2*m)/(max-min), x=n=>m+(n-min)*esc, y=n=>H-m-(n-min)*esc;
-  const paso=limite>16?4:limite>10?2:1;
+  const maxAbs=Math.max(5,...extremos.filter(Number.isFinite).map(v=>Math.abs(v)));
+  const paso=pasoGrilla(maxAbs/6);
+  const limite=Math.max(6,Math.ceil((maxAbs+paso*.7)/paso)*paso);
+  const min=-limite,max=limite,esc=tamano/(max-min), x=n=>m+(n-min)*esc, y=n=>m+(max-n)*esc;
+  const decimales=paso<1?Math.min(3,Math.ceil(-Math.log10(paso))):0;
+  const etiquetaMarca=n=>fmt(Math.abs(n)<1e-10?0:n,decimales);
   const marcas=[];
-  for(let n=min;n<=max;n+=paso){
-    marcas.push(`<line x1="${x(n)}" y1="${m}" x2="${x(n)}" y2="${H-m}" stroke="${n===0?'#62758a':'#e0e8f0'}" stroke-width="${n===0?2:1}"/><line x1="${m}" y1="${y(n)}" x2="${W-m}" y2="${y(n)}" stroke="${n===0?'#62758a':'#e0e8f0'}" stroke-width="${n===0?2:1}"/>${n!==0?`<text x="${x(n)}" y="${y(0)+17}" text-anchor="middle" font-size="11" fill="#65788d">${n}</text><text x="${x(0)-8}" y="${y(n)+4}" text-anchor="end" font-size="11" fill="#65788d">${n}</text>`:''}`);
+  const cantidadPasos=Math.round((max-min)/paso);
+  for(let i=0;i<=cantidadPasos;i+=1){
+    const n=Math.abs(min+i*paso)<1e-10?0:min+i*paso;
+    const esEje=n===0;
+    marcas.push(`<line x1="${x(n)}" y1="${m}" x2="${x(n)}" y2="${H-m}" stroke="${esEje?'#62758a':'#dfe8f1'}" stroke-width="${esEje?2.2:1}"/><line x1="${m}" y1="${y(n)}" x2="${W-m}" y2="${y(n)}" stroke="${esEje?'#62758a':'#dfe8f1'}" stroke-width="${esEje?2.2:1}"/>${!esEje?`<text x="${x(n)}" y="${y(0)+18}" text-anchor="middle" font-size="11" fill="#65788d">${etiquetaMarca(n)}</text><text x="${x(0)-9}" y="${y(n)+4}" text-anchor="end" font-size="11" fill="#65788d">${etiquetaMarca(n)}</text>`:''}`);
   }
+  marcas.push(`<text x="${x(0)-8}" y="${y(0)+18}" text-anchor="end" font-size="11" fill="#65788d">0</text>`);
   const uid=++planoContador;
-  const ids=[`arrAzul${uid}`,`arrVerde${uid}`,`arrNaranja${uid}`,`arrRosa${uid}`];
-  const defs=`<defs><marker id="${ids[0]}" viewBox="0 0 10 10" markerWidth="9" markerHeight="9" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="#1f4e8c"/></marker><marker id="${ids[1]}" viewBox="0 0 10 10" markerWidth="9" markerHeight="9" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="#17725a"/></marker><marker id="${ids[2]}" viewBox="0 0 10 10" markerWidth="9" markerHeight="9" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="#b56b20"/></marker><marker id="${ids[3]}" viewBox="0 0 10 10" markerWidth="9" markerHeight="9" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="#963f62"/></marker></defs>`;
   const colores=['#1f4e8c','#17725a','#b56b20','#963f62'];
-  const arrows=vectores.map((v,i)=>{const p=v.desde||[0,0], q=v.hasta||v.vector, c=v.color||colores[i%colores.length], marker=ids[i%ids.length]; return `<line x1="${x(p[0])}" y1="${y(p[1])}" x2="${x(q[0])}" y2="${y(q[1])}" stroke="${c}" stroke-width="5" stroke-linecap="round" marker-end="url(#${marker})"/><circle cx="${x(p[0])}" cy="${y(p[1])}" r="4" fill="${c}"/><text x="${x(q[0])+8}" y="${y(q[1])-8}" font-size="15" font-weight="800" fill="${c}">${v.etiqueta||''}</text>`;}).join('');
+  const ids=vectores.map((_,i)=>`arrVector${uid}-${i}`);
+  const defs=`<defs>${vectores.map((v,i)=>{const c=v.color||colores[i%colores.length];return `<marker id="${ids[i]}" viewBox="0 0 10 10" markerWidth="9" markerHeight="9" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="${c}"/></marker>`;}).join('')}</defs>`;
+  const arrows=vectores.map((v,i)=>{
+    const p=v.desde||[0,0], q=v.hasta||v.vector||[0,0], c=v.color||colores[i%colores.length];
+    const etiquetaALaIzquierda=q[0]>limite*.68;
+    const etiquetaDebajo=q[1]>limite*.72;
+    const etiquetaX=x(q[0])+(etiquetaALaIzquierda?-10:10);
+    const etiquetaY=y(q[1])+(etiquetaDebajo?20:-10);
+    return `<line x1="${x(p[0])}" y1="${y(p[1])}" x2="${x(q[0])}" y2="${y(q[1])}" stroke="${c}" stroke-width="5" stroke-linecap="round" marker-end="url(#${ids[i]})"/><circle cx="${x(p[0])}" cy="${y(p[1])}" r="4.5" fill="${c}"/><text x="${etiquetaX}" y="${etiquetaY}" text-anchor="${etiquetaALaIzquierda?'end':'start'}" font-size="15" font-weight="800" fill="${c}">${v.etiqueta||''}</text>`;
+  }).join('');
   const extras=opciones.extras||'';
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Plano cartesiano con vectores">${defs}<rect x="${m}" y="${m}" width="${W-2*m}" height="${H-2*m}" rx="12" fill="#fff" stroke="#b9cadb"/>${marcas.join('')}${extras}${arrows}</svg>`;
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Plano cartesiano con vectores; escala de ${etiquetaMarca(paso)} unidad${paso===1?'':'es'} por división">${defs}<rect x="${m}" y="${m}" width="${tamano}" height="${tamano}" rx="12" fill="#fff" stroke="#b9cadb"/>${marcas.join('')}${extras}${arrows}</svg>`;
 }
 
 function actualizarVector() {
